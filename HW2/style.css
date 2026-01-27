@@ -1,0 +1,45 @@
+.hero {
+    background-image: url("images/Hero.jpg");
+    height: 70vh;
+    background-size: cover;
+    background-position: center;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.title {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 2rem 3rem;
+    color: white;
+    text-align: center;
+}
+
+body {
+    font-family: 'Special Elite', monospace;
+    margin: 0;
+    background-color: #111;
+}
+
+#information h1::before {
+    content: ">";
+}
+
+#deeper h1::before {
+    content: ">";
+}
+
+#information, #deeper {
+    backgoround-color: #111;
+    padding: 6rem 1rem;
+}
+
+.description {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    padding: 2rem;
+    max-width: 800px;
+    margin: auto;
+    border-radius: 8px;
+}
