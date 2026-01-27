@@ -1,1 +1,83 @@
+* {
 
+
+.hero p {
+font-size: 1.2rem;
+}
+
+
+/* ---------------- INFO SECTION ---------------- */
+.info {
+padding: 4rem 2rem;
+max-width: 900px;
+margin: auto;
+}
+
+
+.info h2 {
+margin-bottom: 1rem;
+}
+
+
+/* ---------------- PROJECTS ---------------- */
+.projects {
+background: #f4f4f8;
+padding: 4rem 2rem;
+}
+
+
+.project-grid {
+max-width: 1000px;
+margin: auto;
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 1.5rem;
+}
+
+
+.card {
+background: white;
+padding: 1.5rem;
+border-radius: 16px;
+box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+
+/* ---------------- FOOTER ---------------- */
+footer {
+text-align: center;
+padding: 2rem;
+}
+
+
+
+
+/* =========================
+RESPONSIVE BREAKPOINTS
+TWO SEPARATE BREAKS (REQUIRED)
+========================= */
+
+
+/* computer */
+@media (min-width: 1200px) {
+.hero h1 {
+font-size: 3.5rem;
+}
+
+.project-grid {
+grid-template-columns: repeat(4, 1fr);
+}
+}
+
+
+/* Mobile */
+@media (max-width: 500px) {
+.hero-content {
+padding: 1.5rem;
+}
+
+
+.project-grid {
+grid-template-columns: 1fr;
+}
+}
