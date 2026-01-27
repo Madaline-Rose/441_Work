@@ -1,8 +1,9 @@
 .hero {
     background-image: url("images/Hero.jpg");
-    height: 70vh;
+    height: 100vh;
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
 
     display: flex;
     align-items: center;
@@ -16,10 +17,22 @@
     text-align: center;
 }
 
+.title h1 {
+    font-size: 4rem;   
+    letter-spacing: 3px;
+}
+
+.title h2 {
+    font-size: 2rem;
+    margin-top: 0.5rem;
+}
+
 body {
     font-family: 'Special Elite', monospace;
     margin: 0;
     background-color: #111;
+    font-size: 22px;
+    line-height: 1.6;
 }
 
 #information h1::before {
@@ -31,15 +44,17 @@ body {
 }
 
 #information, #deeper {
-    backgoround-color: #111;
-    padding: 6rem 1rem;
+    background-color: #111;
+    color: white;
+    padding: 6rem 2rem;
 }
 
 .description {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.6);
     color: white;
-    padding: 2rem;
+    padding: 2.5rem;
     max-width: 800px;
     margin: auto;
-    border-radius: 8px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
