@@ -1,0 +1,197 @@
+<html>
+<head>
+    <style>
+        body{
+            margin:0;
+            padding:0;
+            background-image: url('images/movie_theater.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            font-family: Arial;
+        }
+
+        #overlay {
+            background-color: rgba(0,0,0,0.5);
+            min-height: 100vh;
+            padding: 50px 20px;
+        }
+
+        .inputBox{
+            display: block;
+            margin: 10px auto;
+        }
+
+        button{
+            display: block;
+            margin: 5px auto 20px auto;
+        }
+
+        img.choiceImg{
+            width: 150px;
+            margin: 10px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<div id="overlay">
+
+<h1>Build Your Perfect Movie Night</h1>
+
+<div id="question">
+You have reached the end of the work week, and decide to relax with a movie night! Do you go solo or invite others?<br><br>
+Options: solo / others
+</div>
+
+<input type="text" id="choice1" class="inputBox">
+<button id="btn1" onclick="getChoice1()">Continue</button>
+
+<input type="text" id="choice2" class="inputBox" style="display:none">
+<button id="btn2" onclick="getChoice2()" style="display:none">Continue</button>
+
+<input type="text" id="choice3" class="inputBox" style="display:none">
+<button id="btn3" onclick="getChoice3()" style="display:none">Continue</button>
+
+<input type="text" id="choice4" class="inputBox" style="display:none">
+<button id="btn4" onclick="getChoice4()" style="display:none">Continue</button>
+
+<input type="text" id="choice5" class="inputBox" style="display:none">
+<button id="btn5" onclick="getChoice5()" style="display:none">Continue</button>
+
+</div>
+
+<script>
+var choice1Answer = "";
+var choice2Answer = "";
+var choice3Answer = "";
+var choice4Answer = "";
+var choice5Answer = "";
+
+// Question 1
+function getChoice1(){
+    var choice = document.getElementById("choice1").value.toLowerCase();
+    var question = document.getElementById("question");
+
+    if(choice !== "solo" && choice !== "others"){
+        question.innerHTML = "Do you go solo or invite others?<br>Options: solo / others<br><span style='color:red;'>Invalid answer</span>";
+        return;
+    }
+
+    choice1Answer = choice;
+    document.body.style.backgroundImage = "url('images/" + choice.replace(" ", "_") + ".jpg')";
+
+    document.getElementById("choice1").style.display="none";
+    document.getElementById("btn1").style.display="none";
+
+    document.getElementById("choice2").style.display="block";
+    document.getElementById("btn2").style.display="block";
+
+    question.innerHTML = "Where are you watching?<br>Options: couch / bed / blanket fort";
+}
+
+// Question 2
+function getChoice2(){
+    var choice = document.getElementById("choice2").value.toLowerCase();
+    var question = document.getElementById("question");
+
+    if(choice !== "couch" && choice !== "bed" && choice !== "blanket fort"){
+        question.innerHTML += "<br><span style='color:red;'>Invalid answer</span>";
+        return;
+    }
+
+    choice2Answer = choice;
+    document.body.style.backgroundImage = "url('images/" + choice.replace(" ", "_") + ".jpg')";
+
+    document.getElementById("choice2").style.display="none";
+    document.getElementById("btn2").style.display="none";
+
+    document.getElementById("choice3").style.display="block";
+    document.getElementById("btn3").style.display="block";
+
+    question.innerHTML = "Choose a genre:<br>Options: horror / romance / action / comedy / thriller / sci-fi / fantasy";
+}
+
+// Question 3
+function getChoice3(){
+    var choice = document.getElementById("choice3").value.toLowerCase();
+    var question = document.getElementById("question");
+
+    var genres = ["horror","romance","action","comedy","thriller","sci-fi","fantasy"];
+    if(!genres.includes(choice)){
+        question.innerHTML += "<br><span style='color:red;'>Invalid answer</span>";
+        return;
+    }
+
+    choice3Answer = choice;
+    document.body.style.backgroundImage = "url('images/" + choice.replace(" ", "_") + ".jpg')";
+
+    document.getElementById("choice3").style.display="none";
+    document.getElementById("btn3").style.display="none";
+
+    document.getElementById("choice4").style.display="block";
+    document.getElementById("btn4").style.display="block";
+
+    question.innerHTML = "Pick a snack:<br>Options: popcorn / candy / nachos / chips / all";
+}
+
+// Question 4
+function getChoice4(){
+    var choice = document.getElementById("choice4").value.toLowerCase();
+    var question = document.getElementById("question");
+
+    var snacks = ["popcorn","candy","nachos","chips","all"];
+    if(!snacks.includes(choice)){
+        question.innerHTML += "<br><span style='color:red;'>Invalid answer</span>";
+        return;
+    }
+
+    choice4Answer = choice;
+    document.body.style.backgroundImage = "url('images/" + choice.replace(" ", "_") + ".jpg')";
+
+    document.getElementById("choice4").style.display="none";
+    document.getElementById("btn4").style.display="none";
+
+    document.getElementById("choice5").style.display="block";
+    document.getElementById("btn5").style.display="block";
+
+    question.innerHTML = "Choose a drink:<br>Options: soda / tea / hot chocolate / energy drink";
+}
+
+// Question 5
+function getChoice5(){
+    var choice = document.getElementById("choice5").value.toLowerCase();
+    var question = document.getElementById("question");
+
+    var drinks = ["soda","tea","hot chocolate","energy drink"];
+    if(!drinks.includes(choice)){
+        question.innerHTML += "<br><span style='color:red;'>Invalid answer</span>";
+        return;
+    }
+
+    choice5Answer = choice;
+    document.body.style.backgroundImage = "url('images/" + choice.replace(" ", "_") + ".jpg')";
+
+    showFinalScreen();
+}
+
+// Show all choices as images
+function showFinalScreen(){
+    var question = document.getElementById("question");
+
+    question.innerHTML = "<h2>Your Movie Night!</h2>";
+
+    var choices = [choice1Answer, choice2Answer, choice3Answer, choice4Answer, choice5Answer];
+
+    choices.forEach(function(c){
+        question.innerHTML += "<img class='choiceImg' src='images/" + c.replace(" ", "_") + ".jpg'>";
+    });
+
+    question.innerHTML += "<br><br>Refresh page to restart.";
+}
+
+     </script>
+    </body>
+</html>
