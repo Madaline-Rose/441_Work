@@ -111,7 +111,7 @@ function getChoice2(){
     document.getElementById("choice3").style.display="block";
     document.getElementById("btn3").style.display="block";
 
-    question.innerHTML = "Choose a genre:<br>Options: horror / romance / action / comedy / thriller / sci-fi / fantasy";
+    question.innerHTML = "Choose a genre:<br>Options: horror / romance / action / comedy / mystery / sci-fi / fantasy";
 }
 
 // Question 3
@@ -119,7 +119,7 @@ function getChoice3(){
     var choice = document.getElementById("choice3").value.toLowerCase();
     var question = document.getElementById("question");
 
-    var genres = ["horror","romance","action","comedy","thriller","sci-fi","fantasy"];
+    var genres = ["horror","romance","action","comedy","mystery","sci-fi","fantasy"];
     if(!genres.includes(choice)){
         question.innerHTML += "<br><span style='color:red;'>Invalid answer</span>";
         return;
@@ -134,7 +134,7 @@ function getChoice3(){
     document.getElementById("choice4").style.display="block";
     document.getElementById("btn4").style.display="block";
 
-    question.innerHTML = "Pick a snack:<br>Options: popcorn / candy / nachos / chips / all";
+    question.innerHTML = "Pick a snack:<br>Options: popcorn / candy / nachos / chips";
 }
 
 // Question 4
@@ -142,7 +142,7 @@ function getChoice4(){
     var choice = document.getElementById("choice4").value.toLowerCase();
     var question = document.getElementById("question");
 
-    var snacks = ["popcorn","candy","nachos","chips","all"];
+    var snacks = ["popcorn","candy","nachos","chips"];
     if(!snacks.includes(choice)){
         question.innerHTML += "<br><span style='color:red;'>Invalid answer</span>";
         return;
