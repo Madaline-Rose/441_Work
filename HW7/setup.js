@@ -22,7 +22,7 @@ function startGame()
     firstName: first,
     lastName: last,
     age: age,
-    attemts: 0
+    attempts: 0
    };
 
    // convert to JSON string

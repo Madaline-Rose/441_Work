@@ -9,7 +9,7 @@ var imageTags = [
 var blankImagePath = "images/card.jpg";
 
 // array for shuffled images
-var actualImage = [];
+var actualImages = [];
 
 // tracking variables
 var firstFlipped = -1;
