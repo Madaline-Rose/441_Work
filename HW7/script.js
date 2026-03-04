@@ -9,7 +9,14 @@ var imageTags = [
 var blankImagePath = "images/card.jpg";
 
 // array for shuffled images
-var actualImages = new Array();
+var actualImage = [];
+
+// tracking variables
+var firstFlipped = -1;
+var secondFlipped = -1;
+var lockBoard = false;
+var attempts = 0;
+var matches = 0;
 
 function printBlanks()
 {
@@ -19,6 +26,9 @@ function printBlanks()
     {
         document.getElementById(imageTags[i]).src = blankImagePath;
     }
+
+    // attempts
+    document.getElementById("attemptDisplay").innerHTML = attempts;
 }
 
 function createRandomImageArray()
@@ -51,5 +61,67 @@ function createRandomImageArray()
 
 function flipImage(number)
 {
+    if(lockBoard) return;                
+    if(number == firstFlipped) return;  
+
     document.getElementById(imageTags[number]).src = actualImages[number];
+
+    if(firstFlipped == -1)
+    {
+        firstFlipped = number;
+    }
+    else
+    {
+        secondFlipped = number;
+        lockBoard = true;
+
+        attempts++;  
+        document.getElementById("attemptDisplay").innerHTML = attempts;
+
+        checkMatch(); 
+    }
+}
+
+// check match
+function checkMatch()
+{
+    if(actualImages[firstFlipped] == actualImages[secondFlipped])
+    {
+        matches++;
+        resetTurn();
+        checkGameOver();
+    }
+    else
+    {
+        setTimeout(function()
+        {
+            document.getElementById(imageTags[firstFlipped]).src = blankImagePath;
+            document.getElementById(imageTags[secondFlipped]).src = blankImagePath;
+            resetTurn();
+        }, 1000);
+    }
+}
+
+// reset
+function resetTurn()
+{
+    firstFlipped = -1;
+    secondFlipped = -1;
+    lockBoard = false;
+}
+
+// game over
+function checkGameOver()
+{
+    if(matches == 6)
+    {
+        var playerString = localStorage.getItem("playerData");
+        var player = JSON.parse(playerString);
+
+        player.attempts = attempts;
+
+        localStorage.setItem("playerData", JSON.stringify(player));
+
+        window.location.href = "results.html";
+    }
 }
