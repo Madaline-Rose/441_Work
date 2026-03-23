@@ -2,13 +2,13 @@ $(document).ready(function () {
 
     // IMAGE SYSTEM
     let images = [
-        "adapt.jpg",
-        "cloud.jpg",
-        "connect.jpg",
-        "dance.jpg",
-        "grow.jpg",
-        "learn.jpg",
-        "reflect.jpg"
+        "images/adapt.jpg",
+        "images/cloud.jpg",
+        "images/connect.jpg",
+        "images/dance.jpg",
+        "images/grow.jpg",
+        "images/learn.jpg",
+        "images/reflect.jpg"
     ];
 
     let imgIndex = 0;
