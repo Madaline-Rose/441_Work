@@ -1,0 +1,17 @@
+[
+    {
+        "title": "Inception",
+        "year": 2010,
+        "genre": "Sci-Fi"
+    },
+    {
+        "title": "Parasite",
+        "year": 2019,
+        "genre": "Thriller"
+    },
+    {
+        "title": "La La Land",
+        "year": 2016,
+        "genre": "Romance"
+    }
+]
