@@ -39,3 +39,6 @@ $.fn.myPlugin = function () {
         $(this).css("background-color", "#f9f9f9");
       }
     );
+
+  });
+};
