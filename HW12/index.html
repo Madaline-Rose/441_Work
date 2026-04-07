@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Missed Signal</title>
+  <style>
+    body {
+      background: #0b0f1a;
+      color: white;
+      font-family: sans-serif;
+      text-align: center;
+    }
+
+    canvas {
+      border: 2px solid #444;
+      background: #0b0f1a;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Missed Signal</h2>
+<p>Move with arrow keys</p>
+
+<button onclick="playMusic()">Play Music</button>
+
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<canvas id="canvas" width="800" height="600"></canvas>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+function playMusic() {
+  document.getElementById("bgMusic").play();
+}
+
+// CLASS
+class Object {
+  constructor(x, y, size, color) {
+    this.x = x;
+    this.y = y;
+    this.width = size;
+    this.height = size;
+    this.color = color;
+    this.speedX = 0;
+    this.speedY = 0;
+  }
+
+  draw() {
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+  }
+
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+
+    // stay inside canvas
+    if (this.x < 0) this.x = 0;
+    if (this.x + this.width > canvas.width) this.x = canvas.width - this.width;
+    if (this.y < 0) this.y = 0;
+    if (this.y + this.height > canvas.height) this.y = canvas.height - this.height;
+  }
+}
+
+// YOU
+let player = new Object(100, 300, 40, "#8ecae6");
+
+// SIGNAL (moves slowly)
+let signal = new Object(500, 200, 40, "#ff6b81");
+signal.speedX = 2;
+signal.speedY = 1.5;
+
+// COLLISION
+function collide(a, b) {
+  return (
+    a.x < b.x + b.width &&
+    a.x + a.width > b.x &&
+    a.y < b.y + b.height &&
+    a.y + a.height > b.y
+  );
+}
+
+// 🎮 CONTROLS
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowUp") player.speedY = -4;
+  if (e.key === "ArrowDown") player.speedY = 4;
+  if (e.key === "ArrowLeft") player.speedX = -4;
+  if (e.key === "ArrowRight") player.speedX = 4;
+});
+
+document.addEventListener("keyup", (e) => {
+  if (e.key.includes("ArrowUp") || e.key.includes("ArrowDown")) player.speedY = 0;
+  if (e.key.includes("ArrowLeft") || e.key.includes("ArrowRight")) player.speedX = 0;
+});
+
+// GAME LOOP
+function loop() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // signal bouncing (but softer)
+  if (signal.x <= 0 || signal.x + signal.width >= canvas.width) {
+    signal.speedX *= -1;
+  }
+  if (signal.y <= 0 || signal.y + signal.height >= canvas.height) {
+    signal.speedY *= -1;
+  }
+
+  player.update();
+  signal.update();
+
+  // COLLISION EFFECT
+  if (collide(player, signal)) {
+    canvas.style.background = "#1a2238";
+
+    player.width = 60;
+    player.height = 60;
+
+    signal.width = 60;
+    signal.height = 60;
+  } else {
+    canvas.style.background = "#0b0f1a";
+
+    player.width = 40;
+    player.height = 40;
+
+    signal.width = 40;
+    signal.height = 40;
+  }
+
+  player.draw();
+  signal.draw();
+}
+
+setInterval(loop, 1000/60);
+</script>
+
+</body>
+</html>
