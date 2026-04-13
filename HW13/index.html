@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Missed Signal</title>
+
+  <style>
+    body {
+      background: #0b0f1a;
+      color: white;
+      font-family: sans-serif;
+      text-align: center;
+    }
+
+    canvas {
+      border: 2px solid #444;
+      background: #0b0f1a;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>Missed Signal</h2>
+<p>Move with arrow keys</p>
+
+<button onclick="playMusic()">Play Music</button>
+
+<audio id="bgMusic" loop>
+  <source src="audio/music.mp3" type="audio/mpeg">
+</audio>
+
+<canvas id="canvas" width="800" height="600"></canvas>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+function playMusic() {
+  document.getElementById("bgMusic").play();
+}
+
+
+class GameObject {
+  constructor(x, y, size, color) {
+    this.x = x;
+    this.y = y;
+    this.width = size;
+    this.height = size;
+    this.color = color;
+    this.speedX = 0;
+    this.speedY = 0;
+  }
+
+  draw() {
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+  }
+
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+
+    if (this.x < 0) this.x = 0;
+    if (this.x + this.width > canvas.width) this.x = canvas.width - this.width;
+    if (this.y < 0) this.y = 0;
+    if (this.y + this.height > canvas.height) this.y = canvas.height - this.height;
+  }
+}
+
+class Obstacle {
+  constructor(data) {
+    this.x = data.x;
+    this.y = data.y;
+    this.w = data.w;
+    this.h = data.h;
+  }
+
+  draw() {
+    ctx.fillStyle = "#ff595e";
+    ctx.fillRect(this.x, this.y, this.w, this.h);
+  }
+}
+
+class Collectible {
+  constructor(data) {
+    this.x = data.x;
+    this.y = data.y;
+    this.size = data.size;
+    this.active = true;
+  }
+
+  draw() {
+    if (!this.active) return;
+
+    ctx.fillStyle = "#ffd166";
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+let player = new GameObject(100, 300, 40, "#8ecae6");
+let signal = new GameObject(500, 200, 40, "#ff6b81");
+signal.speedX = 2;
+signal.speedY = 1.5;
+
+let obstacles = [];
+let collectibles = [];
+let score = 0;
+
+async function loadData() {
+  const obsData = await fetch("obstacles.json").then(r => r.json());
+  const colData = await fetch("collectibles.json").then(r => r.json());
+
+  obstacles = obsData.map(o => new Obstacle(o));
+  collectibles = colData.map(c => new Collectible(c));
+
+  console.log("obstacles:", obstacles);
+  console.log("collectibles:", collectibles);
+}
+
+async function startGame() {
+  await loadData(); 
+  setInterval(loop, 1000 / 60);  
+}
+
+startGame();
+
+function collide(a, b) {
+  return (
+    a.x < b.x + b.width &&
+    a.x + a.width > b.x &&
+    a.y < b.y + b.height &&
+    a.y + a.height > b.y
+  );
+}
+
+function movePlayerWithCollision() {
+  let nextX = player.x + player.speedX;
+  let nextY = player.y + player.speedY;
+
+  let blocked = false;
+
+  for (let obs of obstacles) {
+    if (
+      nextX < obs.x + obs.w &&
+      nextX + player.width > obs.x &&
+      nextY < obs.y + obs.h &&
+      nextY + player.height > obs.y
+    ) {
+      blocked = true;
+      break;
+    }
+  }
+
+  if (!blocked) {
+    player.x = nextX;
+    player.y = nextY;
+  }
+
+  if (player.x < 0) player.x = 0;
+  if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+  if (player.y < 0) player.y = 0;
+  if (player.y + player.height > canvas.height) player.y = canvas.height - player.height;
+}
+
+function checkCollectibles() {
+  for (let c of collectibles) {
+    if (!c.active) continue;
+
+    if (
+      player.x < c.x + c.size &&
+      player.x + player.width > c.x - c.size &&
+      player.y < c.y + c.size &&
+      player.y + player.height > c.y - c.size
+    ) {
+      c.active = false;
+      score++;
+    }
+  }
+}
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowUp") player.speedY = -4;
+  if (e.key === "ArrowDown") player.speedY = 4;
+  if (e.key === "ArrowLeft") player.speedX = -4;
+  if (e.key === "ArrowRight") player.speedX = 4;
+});
+
+document.addEventListener("keyup", (e) => {
+  if (e.key.includes("ArrowUp") || e.key.includes("ArrowDown")) player.speedY = 0;
+  if (e.key.includes("ArrowLeft") || e.key.includes("ArrowRight")) player.speedX = 0;
+});
+
+function loop() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // signal bounce
+  if (signal.x <= 0 || signal.x + signal.width >= canvas.width) {
+    signal.speedX *= -1;
+  }
+  if (signal.y <= 0 || signal.y + signal.height >= canvas.height) {
+    signal.speedY *= -1;
+  }
+
+  movePlayerWithCollision();
+  signal.update();
+
+  if (collide(player, signal)) {
+    canvas.style.background = "#1a2238";
+  } else {
+    canvas.style.background = "#0b0f1a";
+  }
+
+  checkCollectibles();
+
+  player.draw();
+  signal.draw();
+
+  for (let obs of obstacles) obs.draw();
+  for (let c of collectibles) c.draw();
+
+  // SCORE TEXT
+  ctx.fillStyle = "white";
+  ctx.font = "20px sans-serif";
+  ctx.fillText("Score: " + score, 10, 25);
+}
+
+setInterval(loop, 1000 / 60);
+</script>
+
+</body>
+</html>
