@@ -1,0 +1,1 @@
+Homework 14. I struggeled with getting the stars not to spawn where the spikes were. My solution ended up being manually choosing where they spawn, which was a tedious process. 
