@@ -1,107 +1,155 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Three.js Scene</title>
-  <style>
-    body { margin: 0; overflow: hidden; }
-    canvas { display: block; }
-  </style>
+    <meta charset="UTF-8">
+    <title>HW15 Hungry Cat Scene</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; }
+    </style>
 </head>
 
 <body>
 
-<script src="js/three.js"></script>
-<script src="js/GLTFLoader.js"></script>
+<script src="./js/three.js"></script>
+<script src="./js/GLTFLoader.js"></script>
 
 <script>
 
+// =========================
+// SCENE + ATMOSPHERE
+// =========================
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x0b0b1a);
+scene.background = new THREE.Color(0x1a1a28);
 
+// =========================
 // CAMERA
+// =========================
 const camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000
+    75,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
 );
-camera.position.set(0, 2, 8);
+camera.position.z = 6;
 
+// =========================
 // RENDERER
+// =========================
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// LIGHTS
-const light = new THREE.DirectionalLight(0xffffff, 1.2);
-light.position.set(5, 5, 5);
-scene.add(light);
+// =========================
+// LIGHTING
+// =========================
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+scene.add(ambientLight);
 
-const ambient = new THREE.AmbientLight(0xffffff, 0.4);
-scene.add(ambient);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
+directionalLight.position.set(5, 5, 5);
+scene.add(directionalLight);
 
-// STAR
-const star = new THREE.Mesh(
-  new THREE.OctahedronGeometry(1),
-  new THREE.MeshStandardMaterial({ color: 0xffd700 })
+// =========================
+// ORBIT CENTER (CAT FOCUS)
+// =========================
+const center = new THREE.Vector3(0, 0, 0);
+
+// =========================
+// FOOD OBJECTS
+// =========================
+
+// DONUT
+const donut = new THREE.Mesh(
+    new THREE.TorusGeometry(0.35, 0.13, 16, 100),
+    new THREE.MeshStandardMaterial({ color: 0xd8a15d })
 );
-star.position.set(-3, 1, 0);
-scene.add(star);
+scene.add(donut);
 
-// MOON
-const moon = new THREE.Mesh(
-  new THREE.TorusGeometry(1.2, 0.4, 16, 100),
-  new THREE.MeshStandardMaterial({ color: 0xffffff })
+// APPLE
+const apple = new THREE.Mesh(
+    new THREE.SphereGeometry(0.3, 32, 32),
+    new THREE.MeshStandardMaterial({ color: 0xff3b30 })
 );
-moon.position.set(3, 1, 0);
-moon.rotation.x = Math.PI / 2;
-scene.add(moon);
+scene.add(apple);
 
-// =======================
-// FIXED LOADER SETUP
-// =======================
+// STEM
+const stem = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.03, 0.03, 0.18),
+    new THREE.MeshStandardMaterial({ color: 0x5c3a21 })
+);
+scene.add(stem);
+
+// =========================
+// CAT MODEL
+// =========================
 const loader = new THREE.GLTFLoader();
+
 let cat;
 
-loader.load('./model.glb', function (gltf) {
+loader.load(
+    './black_cat.glb',
+    function (gltf) {
+        cat = gltf.scene;
+        cat.scale.set(1.5, 1.5, 1.5);
+        cat.position.set(0, -1, 0);
+        scene.add(cat);
+    }
+);
 
-  cat = gltf.scene;
-  scene.add(cat);
-
-  cat.scale.set(5, 5, 5);
-  cat.position.set(0, 0, 0);
-
-  console.log("CAT LOADED");
-});
-
+// =========================
 // ANIMATION
+// =========================
+let angle = 0;
+
 function animate() {
-  requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
 
-  star.rotation.y += 0.02;
-  star.rotation.x += 0.01;
+    angle += 0.01;
 
-  moon.rotation.z += 0.01;
+    // ORBITING FOOD (thought halo)
+    const radius = 2;
 
-  if (cat) {
-    cat.rotation.y += 0.01;
-  }
+    donut.position.x = Math.cos(angle) * radius;
+    donut.position.y = 1.2 + Math.sin(angle * 1.2) * 0.3;
+    donut.position.z = Math.sin(angle) * radius;
 
-  camera.position.x = Math.sin(Date.now() * 0.0005) * 8;
-  camera.position.z = Math.cos(Date.now() * 0.0005) * 8;
-  camera.lookAt(0, 0, 0);
+    apple.position.x = Math.cos(angle + Math.PI) * radius;
+    apple.position.y = 1.4 + Math.sin(angle * 1.5) * 0.3;
+    apple.position.z = Math.sin(angle + Math.PI) * radius;
 
-  renderer.render(scene, camera);
+    stem.position.copy(apple.position);
+    stem.position.y += 0.35;
+
+    // FOOD ROTATION
+    donut.rotation.x += 0.01;
+    donut.rotation.y += 0.02;
+
+    apple.rotation.y += 0.01;
+
+    // CAT BREATHING MOTION
+    if (cat) {
+        cat.position.y = -1 + Math.sin(Date.now() * 0.001) * 0.05;
+        cat.rotation.y += 0.003;
+    }
+
+    // CAMERA DRIFT (dreamy feel)
+    camera.position.x = Math.sin(Date.now() * 0.0004) * 3;
+    camera.position.z = 6 + Math.cos(Date.now() * 0.0004) * 0.5;
+    camera.lookAt(0, 0, 0);
+
+    renderer.render(scene, camera);
 }
 
 animate();
 
+// =========================
 // RESIZE
+// =========================
 window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
 </script>
