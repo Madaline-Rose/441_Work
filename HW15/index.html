@@ -16,15 +16,11 @@
 
 <script>
 
-// =========================
 // SCENE + ATMOSPHERE
-// =========================
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x1a1a28);
 
-// =========================
 // CAMERA
-// =========================
 const camera = new THREE.PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
@@ -33,16 +29,12 @@ const camera = new THREE.PerspectiveCamera(
 );
 camera.position.z = 6;
 
-// =========================
 // RENDERER
-// =========================
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// =========================
 // LIGHTING
-// =========================
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
 scene.add(ambientLight);
 
@@ -50,14 +42,11 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
 directionalLight.position.set(5, 5, 5);
 scene.add(directionalLight);
 
-// =========================
-// ORBIT CENTER (CAT FOCUS)
-// =========================
+// ORBIT CENTER
 const center = new THREE.Vector3(0, 0, 0);
 
-// =========================
+
 // FOOD OBJECTS
-// =========================
 
 // DONUT
 const donut = new THREE.Mesh(
@@ -80,9 +69,7 @@ const stem = new THREE.Mesh(
 );
 scene.add(stem);
 
-// =========================
 // CAT MODEL
-// =========================
 const loader = new THREE.GLTFLoader();
 
 let cat;
@@ -97,9 +84,7 @@ loader.load(
     }
 );
 
-// =========================
 // ANIMATION
-// =========================
 let angle = 0;
 
 function animate() {
@@ -107,7 +92,7 @@ function animate() {
 
     angle += 0.01;
 
-    // ORBITING FOOD (thought halo)
+    // ORBITING FOOD 
     const radius = 2;
 
     donut.position.x = Math.cos(angle) * radius;
@@ -133,7 +118,7 @@ function animate() {
         cat.rotation.y += 0.003;
     }
 
-    // CAMERA DRIFT (dreamy feel)
+    // CAMERA DRIFT 
     camera.position.x = Math.sin(Date.now() * 0.0004) * 3;
     camera.position.z = 6 + Math.cos(Date.now() * 0.0004) * 0.5;
     camera.lookAt(0, 0, 0);
@@ -143,9 +128,8 @@ function animate() {
 
 animate();
 
-// =========================
+
 // RESIZE
-// =========================
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
