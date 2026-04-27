@@ -19,134 +19,56 @@
 
     <script>
 
-      // ======================
-      // SCENE
-      // ======================
-      var scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x111122);
+   var scene = new THREE.Scene();
 
-      // CAMERA
-      var camera = new THREE.PerspectiveCamera(
-        75,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        1000
-      );
-      camera.position.z = 5;
+var camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+camera.position.z = 5;
 
-      // RENDERER
-      var renderer = new THREE.WebGLRenderer();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      document.body.appendChild(renderer.domElement);
+var renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
 
-      // ======================
-      // LIGHTING
-      // ======================
-      var light = new THREE.DirectionalLight(0xffffff, 1);
-      light.position.set(5, 5, 5);
-      scene.add(light);
+// LIGHT (needed to see model)
+var light = new THREE.DirectionalLight(0xffffff, 1);
+light.position.set(5, 5, 5);
+scene.add(light);
 
-      var ambient = new THREE.AmbientLight(0x404040);
-      scene.add(ambient);
+// LOAD MODEL ONLY
+var loader = new THREE.GLTFLoader();
+var model;
 
-      // ======================
-      // SHAPE 1: CUBE
-      // ======================
-      var cube = new THREE.Mesh(
-        new THREE.BoxGeometry(),
-        new THREE.MeshStandardMaterial({ color: 0xff4d6d })
-      );
-      cube.position.x = -2;
-      scene.add(cube);
+console.log("Starting load...");
 
-      // ======================
-      // SHAPE 2: SPHERE
-      // ======================
-      var sphere = new THREE.Mesh(
-        new THREE.SphereGeometry(0.7, 32, 32),
-        new THREE.MeshStandardMaterial({ color: 0x4cc9f0 })
-      );
-      sphere.position.x = 2;
-      scene.add(sphere);
+loader.load(
+  'model.glb',
+  function (gltf) {
+    console.log("MODEL LOADED ✔");
 
-      // ======================
-      // SHAPE 3: TORUS
-      // ======================
-      var torus = new THREE.Mesh(
-        new THREE.TorusGeometry(0.8, 0.3, 16, 100),
-        new THREE.MeshStandardMaterial({ color: 0x80ed99 })
-      );
-      torus.position.y = 1.5;
-      scene.add(torus);
+    model = gltf.scene;
+    scene.add(model);
 
-      // ======================
-      // MODEL LOADER (BLACK CAT)
-      // ======================
-      var loader = new THREE.GLTFLoader();
-      var model;
+    model.scale.set(1, 1, 1);
+    model.position.set(0, 0, 0);
+  },
+  function (xhr) {
+    console.log((xhr.loaded / xhr.total * 100) + "% loaded");
+  },
+  function (error) {
+    console.error("GLB ERROR:", error);
+  }
+);
 
-      loader.load(
-        'HW15/model.glb',
-        function (gltf) {
-          model = gltf.scene;
-
-          // SCALE (adjust if needed)
-          model.scale.set(2, 2, 2);
-
-          // POSITION
-          model.position.set(0, -1, 0);
-
-          // OPTIONAL: loop through meshes
-          model.traverse(function (child) {
-            if (child.isMesh) {
-              child.castShadow = true;
-            }
-          });
-
-          scene.add(model);
-
-          console.log("Model loaded successfully");
-        },
-        undefined,
-        function (error) {
-          console.error("GLB ERROR:", error);
-        }
-      );
-
-      // ======================
-      // ANIMATION LOOP
-      // ======================
-      function animate() {
-        requestAnimationFrame(animate);
-
-        // ROTATION
-        cube.rotation.x += 0.01;
-        cube.rotation.y += 0.01;
-
-        sphere.rotation.y += 0.02;
-        torus.rotation.x += 0.015;
-
-        if (model) {
-          model.rotation.y += 0.02;
-        }
-
-        // CAMERA MOTION (extra requirement)
-        camera.position.x = Math.sin(Date.now() * 0.001) * 5;
-        camera.lookAt(0, 0, 0);
-
-        renderer.render(scene, camera);
-      }
-
-      animate();
-
-      // ======================
-      // RESIZE FIX
-      // ======================
-      window.addEventListener('resize', function () {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      });
+// RENDER LOOP
+function animate() {
+  requestAnimationFrame(animate);
+  renderer.render(scene, camera);
+}
+animate();
 
     </script>
 
