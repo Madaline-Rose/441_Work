@@ -73,15 +73,29 @@
         'model.glb',
         function (gltf) {
           model = gltf.scene;
-          model.scale.set(3, 3, 3); 
-          model.position.y = 0;
+
+          // 🔥 FIX SCALE (try moderate first)
+          model.scale.set(0.5, 0.5, 0.5);
+
+          // 🔥 FIX POSITION (lift it up)
+          model.position.set(0, -1, 0);
+
+          // 🔥 FORCE CENTER VIEW
           scene.add(model);
+
+          console.log("Model loaded:", model);
         },
         undefined,
         function (error) {
-          console.error(error);
+          console.error("GLB ERROR:", error);
         }
       );
+
+      model.traverse(function (child) {
+        if (child.isMesh) {
+          child.castShadow = true;
+        }
+      });
 
       function animate() {
         requestAnimationFrame(animate);
