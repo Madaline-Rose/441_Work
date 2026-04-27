@@ -8,6 +8,7 @@
       canvas { display: block; }
     </style>
   </head>
+
   <body>
 
     <!-- THREE.JS -->
@@ -17,11 +18,13 @@
     <script src="js/GLTFLoader.js"></script>
 
     <script>
-      
+      // ======================
+      // SCENE
+      // ======================
       var scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x202030);
+      scene.background = new THREE.Color(0x111122);
 
-  
+      // CAMERA
       var camera = new THREE.PerspectiveCamera(
         75,
         window.innerWidth / window.innerHeight,
@@ -30,10 +33,14 @@
       );
       camera.position.z = 5;
 
+      // RENDERER
       var renderer = new THREE.WebGLRenderer();
       renderer.setSize(window.innerWidth, window.innerHeight);
       document.body.appendChild(renderer.domElement);
 
+      // ======================
+      // LIGHTING
+      // ======================
       var light = new THREE.DirectionalLight(0xffffff, 1);
       light.position.set(5, 5, 5);
       scene.add(light);
@@ -41,28 +48,39 @@
       var ambient = new THREE.AmbientLight(0x404040);
       scene.add(ambient);
 
+      // ======================
+      // SHAPE 1: CUBE
+      // ======================
       var cube = new THREE.Mesh(
         new THREE.BoxGeometry(),
-        new THREE.MeshStandardMaterial({ color: 0xff5555 })
+        new THREE.MeshStandardMaterial({ color: 0xff4d6d })
       );
       cube.position.x = -2;
       scene.add(cube);
 
+      // ======================
+      // SHAPE 2: SPHERE
+      // ======================
       var sphere = new THREE.Mesh(
         new THREE.SphereGeometry(0.7, 32, 32),
-        new THREE.MeshStandardMaterial({ color: 0x55aaff })
+        new THREE.MeshStandardMaterial({ color: 0x4cc9f0 })
       );
       sphere.position.x = 2;
       scene.add(sphere);
 
-      // Extra Shape
-      var cone = new THREE.Mesh(
-        new THREE.ConeGeometry(0.5, 1, 32),
-        new THREE.MeshStandardMaterial({ color: 0x00ff99 })
+      // ======================
+      // SHAPE 3: TORUS (extra)
+      // ======================
+      var torus = new THREE.Mesh(
+        new THREE.TorusGeometry(0.8, 0.3, 16, 100),
+        new THREE.MeshStandardMaterial({ color: 0x80ed99 })
       );
-      cone.position.y = 1.5;
-      scene.add(cone);
+      torus.position.y = 1.5;
+      scene.add(torus);
 
+      // ======================
+      // MODEL LOADER
+      // ======================
       var loader = new THREE.GLTFLoader();
       var model;
 
@@ -70,7 +88,7 @@
         'model.glb',
         function (gltf) {
           model = gltf.scene;
-          model.scale.set(1, 1, 1);
+          model.scale.set(0.02, 0.02, 0.02); // adjust depending on model
           model.position.y = -1;
           scene.add(model);
         },
@@ -80,20 +98,24 @@
         }
       );
 
+      // ======================
+      // ANIMATION LOOP
+      // ======================
       function animate() {
         requestAnimationFrame(animate);
 
-    
+        // ROTATION
         cube.rotation.x += 0.01;
         cube.rotation.y += 0.01;
 
         sphere.rotation.y += 0.02;
-        cone.rotation.x += 0.015;
+        torus.rotation.x += 0.015;
 
         if (model) {
-          model.rotation.y += 0.01;
+          model.rotation.y += 0.02;
         }
 
+        // CAMERA MOTION (extra requirement)
         camera.position.x = Math.sin(Date.now() * 0.001) * 5;
         camera.lookAt(0, 0, 0);
 
@@ -102,11 +124,15 @@
 
       animate();
 
+      // ======================
+      // RESIZE FIX
+      // ======================
       window.addEventListener('resize', function () {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
       });
+
     </script>
 
   </body>
