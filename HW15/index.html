@@ -18,10 +18,14 @@
     <script src="js/GLTFLoader.js"></script>
 
     <script>
-      
+
+      // ======================
+      // SCENE
+      // ======================
       var scene = new THREE.Scene();
       scene.background = new THREE.Color(0x111122);
 
+      // CAMERA
       var camera = new THREE.PerspectiveCamera(
         75,
         window.innerWidth / window.innerHeight,
@@ -30,10 +34,14 @@
       );
       camera.position.z = 5;
 
+      // RENDERER
       var renderer = new THREE.WebGLRenderer();
       renderer.setSize(window.innerWidth, window.innerHeight);
       document.body.appendChild(renderer.domElement);
 
+      // ======================
+      // LIGHTING
+      // ======================
       var light = new THREE.DirectionalLight(0xffffff, 1);
       light.position.set(5, 5, 5);
       scene.add(light);
@@ -41,7 +49,9 @@
       var ambient = new THREE.AmbientLight(0x404040);
       scene.add(ambient);
 
+      // ======================
       // SHAPE 1: CUBE
+      // ======================
       var cube = new THREE.Mesh(
         new THREE.BoxGeometry(),
         new THREE.MeshStandardMaterial({ color: 0xff4d6d })
@@ -49,7 +59,9 @@
       cube.position.x = -2;
       scene.add(cube);
 
+      // ======================
       // SHAPE 2: SPHERE
+      // ======================
       var sphere = new THREE.Mesh(
         new THREE.SphereGeometry(0.7, 32, 32),
         new THREE.MeshStandardMaterial({ color: 0x4cc9f0 })
@@ -57,7 +69,9 @@
       sphere.position.x = 2;
       scene.add(sphere);
 
-      // SHAPE 3: TORUS (extra)
+      // ======================
+      // SHAPE 3: TORUS
+      // ======================
       var torus = new THREE.Mesh(
         new THREE.TorusGeometry(0.8, 0.3, 16, 100),
         new THREE.MeshStandardMaterial({ color: 0x80ed99 })
@@ -65,7 +79,9 @@
       torus.position.y = 1.5;
       scene.add(torus);
 
-    
+      // ======================
+      // MODEL LOADER (BLACK CAT)
+      // ======================
       var loader = new THREE.GLTFLoader();
       var model;
 
@@ -74,16 +90,22 @@
         function (gltf) {
           model = gltf.scene;
 
-          // 🔥 FIX SCALE (try moderate first)
+          // SCALE (adjust if needed)
           model.scale.set(0.5, 0.5, 0.5);
 
-          // 🔥 FIX POSITION (lift it up)
+          // POSITION
           model.position.set(0, -1, 0);
 
-          // 🔥 FORCE CENTER VIEW
+          // OPTIONAL: loop through meshes
+          model.traverse(function (child) {
+            if (child.isMesh) {
+              child.castShadow = true;
+            }
+          });
+
           scene.add(model);
 
-          console.log("Model loaded:", model);
+          console.log("Model loaded successfully");
         },
         undefined,
         function (error) {
@@ -91,12 +113,9 @@
         }
       );
 
-      model.traverse(function (child) {
-        if (child.isMesh) {
-          child.castShadow = true;
-        }
-      });
-
+      // ======================
+      // ANIMATION LOOP
+      // ======================
       function animate() {
         requestAnimationFrame(animate);
 
@@ -120,6 +139,9 @@
 
       animate();
 
+      // ======================
+      // RESIZE FIX
+      // ======================
       window.addEventListener('resize', function () {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
