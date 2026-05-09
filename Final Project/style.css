@@ -154,7 +154,7 @@ body{
 /* ROCKY TEXT */
 .rocky-text{
   left:60px;
-  top:230px;
+  top:320px;
 
   font-size:30px;
 
@@ -166,7 +166,7 @@ body{
 /* GRACE TEXT */
 .grace-text{
   left:350px;
-  top:240px;
+  top:360px;
 
   width:250px;
 
@@ -179,8 +179,8 @@ body{
 
 /* SHIP TEXT */
 .ship-text{
-  left:300px;
-  top:25px;
+  left:280px;
+  top:110px;
 
   font-size:26px;
 
