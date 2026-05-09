@@ -4,20 +4,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Project Hail Mary Interactive Poster</title>
-
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <div class="poster-container">
+<div class="poster-container">
 
-    <!-- TEXT -->
-  <div class="hover-text rocky-text">
-    AMAZE AMAZE AMAZE
-  </div>
+  <!-- BASE POSTER -->
+  <img src="assets/poster.png" class="poster-base">
+
+  <!-- CHARACTERS + SHIP -->
+  <img src="assets/rocky.png" class="interactive rocky-image">
+  <img src="assets/grace.png" class="interactive grace-image">
+  <img src="assets/ship.png" class="interactive ship-image">
+
+  <!-- HITBOXES -->
+  <div class="hitbox rocky-hitbox"></div>
+  <div class="hitbox grace-hitbox"></div>
+  <div class="hitbox ship-hitbox"></div>
+
+  <!-- TEXT -->
+  <div class="hover-text rocky-text">AMAZE AMAZE AMAZE</div>
 
   <div class="hover-text grace-text">
     “Science the shit out of it.”
@@ -32,31 +41,11 @@
 
 </div>
 
-    <!-- TEXT -->
+<!-- AUDIO -->
+<audio id="theme-song" src="assets/song.mp3"></audio>
+<audio id="warning-sound" src="assets/warning.mp3"></audio>
 
-    <div class="hover-text rocky-text">
-      AMAZE AMAZE AMAZE
-    </div>
-
-    <div class="hover-text grace-text">
-      “Science the shit out of it.”
-    </div>
-
-    <div class="hover-text ship-text">
-      WARNING: SYSTEM FAILURE
-    </div>
-
-    <!-- TITLE CLICK AREA -->
-    <div class="title-hitbox"></div>
-
-  </div>
-
-  <!-- AUDIO -->
-  <audio id="theme-song" src="assets/song.mp3"></audio>
-
-  <audio id="warning-sound" src="assets/warning.mp3"></audio>
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 
 </body>
 </html>
