@@ -14,7 +14,7 @@ body{
   font-family:Arial, Helvetica, sans-serif;
 }
 
-/* MAIN POSTER */
+/* POSTER */
 .poster-container{
   position:relative;
 
@@ -27,7 +27,7 @@ body{
   display:block;
 }
 
-/* ALL INTERACTIVE CUTOUTS */
+/* CUTOUTS */
 .interactive{
   position:absolute;
 
@@ -36,30 +36,82 @@ body{
   left:0;
   top:0;
 
-  cursor:pointer;
+  pointer-events:none;
 
   transition:
     transform 0.3s ease,
     filter 0.3s ease;
 }
 
-/* GENERAL HOVER EFFECT */
-.interactive:hover{
+/* HITBOXES */
+.hitbox{
+  position:absolute;
+
+  z-index:20;
+
+  cursor:pointer;
+
+  /* TURN ON FOR DEBUGGING */
+  /* background:rgba(255,0,0,0.3); */
+}
+
+/* ROCKY HITBOX */
+.rocky-hitbox{
+  width:180px;
+  height:220px;
+
+  left:60px;
+  top:300px;
+}
+
+/* GRACE HITBOX */
+.grace-hitbox{
+  width:220px;
+  height:330px;
+
+  left:350px;
+  top:280px;
+}
+
+/* SHIP HITBOX */
+.ship-hitbox{
+  width:120px;
+  height:100px;
+
+  left:400px;
+  top:70px;
+}
+
+/* ROCKY EFFECT */
+.rocky-hitbox:hover ~ .rocky-image{
   transform:scale(1.04);
 
   filter:
-    brightness(1.15)
+    brightness(1.2)
     drop-shadow(0 0 15px white);
-
-  z-index:5;
 }
 
-/* SHIP SHAKE EFFECT */
-.ship:hover{
+/* GRACE EFFECT */
+.grace-hitbox:hover ~ .grace-image{
+  transform:scale(1.04);
+
+  filter:
+    brightness(1.2)
+    drop-shadow(0 0 15px white);
+}
+
+/* SHIP EFFECT */
+.ship-hitbox:hover ~ .ship-image{
+  transform:scale(1.04);
+
+  filter:
+    brightness(1.2)
+    drop-shadow(0 0 15px red);
+
   animation:shake 0.2s infinite;
 }
 
-/* SHAKE ANIMATION */
+/* SHAKE */
 @keyframes shake{
 
   0%{
@@ -94,37 +146,41 @@ body{
 
   pointer-events:none;
 
-  color:white;
-
   font-weight:bold;
 
-  text-shadow:0 0 10px white;
-
-  z-index:10;
+  z-index:30;
 }
 
 /* ROCKY TEXT */
 .rocky-text{
-  left:70px;
-  top:240px;
+  left:60px;
+  top:230px;
 
   font-size:30px;
+
+  color:white;
+
+  text-shadow:0 0 10px white;
 }
 
 /* GRACE TEXT */
 .grace-text{
   left:350px;
-  top:250px;
+  top:240px;
 
   width:250px;
 
   font-size:22px;
+
+  color:white;
+
+  text-shadow:0 0 10px white;
 }
 
-/* SHIP WARNING TEXT */
+/* SHIP TEXT */
 .ship-text{
-  left:310px;
-  top:30px;
+  left:300px;
+  top:25px;
 
   font-size:26px;
 
@@ -135,20 +191,20 @@ body{
   animation:blink 0.7s infinite;
 }
 
-/* SHOW TEXT ON HOVER */
-.rocky:hover ~ .rocky-text{
+/* SHOW TEXT ONLY ON HOVER */
+.rocky-hitbox:hover ~ .rocky-text{
   opacity:1;
 }
 
-.grace:hover ~ .grace-text{
+.grace-hitbox:hover ~ .grace-text{
   opacity:1;
 }
 
-.ship:hover ~ .ship-text{
+.ship-hitbox:hover ~ .ship-text{
   opacity:1;
 }
 
-/* BLINKING EFFECT */
+/* BLINK */
 @keyframes blink{
 
   0%{
@@ -175,10 +231,10 @@ body{
   left:90px;
   bottom:95px;
 
+  z-index:40;
+
   cursor:pointer;
 
-  z-index:20;
-
-  /* TURN ON FOR ALIGNMENT TESTING */
-  /* background:rgba(255,0,0,0.2); */
+  /* DEBUG */
+  /* background:rgba(0,255,0,0.3); */
 }

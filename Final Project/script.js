@@ -1,6 +1,4 @@
-/* =========================
-   SONG CLICK AREA
-========================= */
+/* TITLE SONG */
 
 const titleHitbox = document.querySelector(".title-hitbox");
 
@@ -27,15 +25,13 @@ titleHitbox.addEventListener("click", () => {
 });
 
 
-/* =========================
-   SHIP WARNING SOUND
-========================= */
+/* SHIP WARNING SOUND */
 
-const ship = document.querySelector(".ship");
+const shipHitbox = document.querySelector(".ship-hitbox");
 
 const warningSound = document.querySelector("#warning-sound");
 
-ship.addEventListener("mouseenter", () => {
+shipHitbox.addEventListener("mouseenter", () => {
 
   warningSound.currentTime = 0;
 
@@ -44,7 +40,7 @@ ship.addEventListener("mouseenter", () => {
 });
 
 
-ship.addEventListener("mouseleave", () => {
+shipHitbox.addEventListener("mouseleave", () => {
 
   warningSound.pause();
 
