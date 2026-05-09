@@ -13,18 +13,32 @@ console.log("ship:", ship);
 const warningSound = document.querySelector("#warning-sound");
 const themeSong = document.querySelector("#theme-song");
 
-/* SONG */
+const poster = document.querySelector(".poster-container");
+
 let songPlaying = false;
 
-document.querySelector(".title-hitbox")?.addEventListener("click", () => {
+poster.addEventListener("click", () => {
+
   if (!songPlaying) {
-    themeSong.play();
+
+    const playPromise = themeSong.play();
+
+    if (playPromise !== undefined) {
+      playPromise.catch((err) => {
+        console.log("Audio blocked:", err);
+      });
+    }
+
     songPlaying = true;
+
   } else {
+
     themeSong.pause();
     themeSong.currentTime = 0;
     songPlaying = false;
+
   }
+
 });
 
 /* SAFETY CHECK (IMPORTANT) */
