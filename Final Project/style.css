@@ -6,27 +6,24 @@ body{
   align-items:center;
   height:100vh;
   overflow:hidden;
-  font-family:Arial, Helvetica, sans-serif;
+  font-family:Arial;
 }
 
-/* CONTAINER */
 .poster-container{
   position:relative;
   width:700px;
 }
 
-/* BASE */
 .poster-base{
   width:100%;
-  display:block;
 }
 
-/* LAYERS */
+/* images */
 .interactive{
   position:absolute;
-  width:100%;
   left:0;
   top:0;
+  width:100%;
   pointer-events:none;
   transition:transform 0.2s ease, filter 0.2s ease;
 }
@@ -34,127 +31,59 @@ body{
 /* HITBOXES */
 .hitbox{
   position:absolute;
-  z-index:20;
-  cursor:pointer;
+  z-index:10;
 }
 
-/* ROCKY */
-.rocky-hitbox{
-  width:180px;
-  height:220px;
-  left:60px;
-  top:300px;
+/* positions */
+.rocky-hitbox{ width:180px; height:220px; left:60px; top:300px; }
+.grace-hitbox{ width:220px; height:330px; left:350px; top:280px; }
+.ship-hitbox{ width:120px; height:100px; left:400px; top:70px; }
+
+/* TEXT */
+.hover-text{
+  position:absolute;
+  opacity:0;
+  padding:6px 10px;
+  background:rgba(0,0,0,0.55);
+  border-radius:8px;
+  color:white;
+  font-weight:bold;
+  z-index:50;
+  transition:opacity 0.2s ease;
 }
 
-.rocky-hitbox:hover ~ .rocky-image{
+.rocky-text{ left:60px; top:320px; }
+.grace-text{ left:350px; top:360px; width:250px; }
+.ship-text{ left:280px; top:110px; color:red; }
+
+/* ACTIVE STATES (JS CONTROLLED) */
+.active-rocky .rocky-image{
   transform:scale(1.08) translateY(-3px);
   filter:brightness(1.3) drop-shadow(0 0 20px white);
 }
 
-/* GRACE */
-.grace-hitbox{
-  width:220px;
-  height:330px;
-  left:350px;
-  top:280px;
-}
-
-.grace-hitbox:hover ~ .grace-image{
+.active-grace .grace-image{
   transform:scale(1.08) translateY(-3px);
   filter:brightness(1.3) drop-shadow(0 0 20px white);
 }
 
-/* SHIP */
-.ship-hitbox{
-  width:120px;
-  height:100px;
-  left:400px;
-  top:70px;
-}
-
-.ship-hitbox:hover ~ .ship-image{
-  animation:shipShake 0.18s infinite;
+.active-ship .ship-image{
+  animation:shipShake 0.15s infinite;
   filter:brightness(1.2) drop-shadow(0 0 18px red);
+}
+
+/* TEXT VISIBILITY */
+.active-rocky .rocky-text,
+.active-grace .grace-text,
+.active-ship .ship-text{
+  opacity:1;
 }
 
 /* SHIP SHAKE */
 @keyframes shipShake{
-  0%   { transform:translate(0,0) scale(1.04); }
-  25%  { transform:translate(-2px,1px) scale(1.04); }
-  50%  { transform:translate(2px,-1px) scale(1.04); }
-  75%  { transform:translate(-1px,-2px) scale(1.04); }
-  100% { transform:translate(1px,2px) scale(1.04); }
-}
-
-/* TEXT BASE */
-.hover-text{
-  position:absolute;
-  opacity:0;
-  transition:opacity 0.25s ease;
-  pointer-events:none;
-  font-weight:700;
-  z-index:50;
-
-  padding:6px 10px;
-  background:rgba(0,0,0,0.55);
-  border-radius:8px;
-  backdrop-filter: blur(4px);
-}
-
-/* ROCKY TEXT */
-.rocky-text{
-  left:60px;
-  top:320px;
-  font-size:30px;
-  color:white;
-  text-shadow:0 0 10px white;
-}
-
-.rocky-hitbox:hover ~ .rocky-text{
-  opacity:1;
-}
-
-/* GRACE TEXT */
-.grace-text{
-  left:350px;
-  top:360px;
-  width:250px;
-  font-size:22px;
-  color:white;
-  text-shadow:0 0 10px white;
-}
-
-.grace-hitbox:hover ~ .grace-text{
-  opacity:1;
-}
-
-/* SHIP TEXT */
-.ship-text{
-  left:280px;
-  top:110px;
-  font-size:26px;
-  color:red;
-  text-shadow:0 0 15px red;
-  animation:blink 0.7s infinite;
-}
-
-.ship-hitbox:hover ~ .ship-text{
-  opacity:1;
-}
-
-/* BLINK */
-@keyframes blink{
-  0%,100%{opacity:1;}
-  50%{opacity:0;}
-}
-
-/* TITLE AREA */
-.title-hitbox{
-  position:absolute;
-  width:520px;
-  height:110px;
-  left:90px;
-  bottom:95px;
-  z-index:40;
-  cursor:pointer;
+  0%{transform:translate(0,0) scale(1.04);}
+  25%{transform:translate(-2px,2px) scale(1.04);}
+  50%{transform:translate(2px,-2px) scale(1.04);}
+  75%{transform:translate(-2px,-2px) scale(1.04);}
+  100%{transform:translate(2px,2px) scale(1.04);}
 }

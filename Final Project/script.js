@@ -1,49 +1,59 @@
-/* TITLE SONG */
+console.log("JS loaded");
 
-const titleHitbox = document.querySelector(".title-hitbox");
+const container = document.querySelector(".poster-container");
 
-const themeSong = document.querySelector("#theme-song");
+const rocky = document.querySelector(".rocky-hitbox");
+const grace = document.querySelector(".grace-hitbox");
+const ship = document.querySelector(".ship-hitbox");
 
-let songPlaying = false;
-
-titleHitbox.addEventListener("click", () => {
-
-  if(songPlaying === false){
-
-    themeSong.play();
-
-    songPlaying = true;
-
-  }else{
-
-    themeSong.pause();
-
-    songPlaying = false;
-
-  }
-
-});
-
-
-/* SHIP WARNING SOUND */
-
-const shipHitbox = document.querySelector(".ship-hitbox");
+console.log("rocky:", rocky);
+console.log("grace:", grace);
+console.log("ship:", ship);
 
 const warningSound = document.querySelector("#warning-sound");
+const themeSong = document.querySelector("#theme-song");
 
-shipHitbox.addEventListener("mouseenter", () => {
+/* SONG */
+let songPlaying = false;
 
-  warningSound.currentTime = 0;
-
-  warningSound.play();
-
+document.querySelector(".title-hitbox")?.addEventListener("click", () => {
+  if (!songPlaying) {
+    themeSong.play();
+    songPlaying = true;
+  } else {
+    themeSong.pause();
+    themeSong.currentTime = 0;
+    songPlaying = false;
+  }
 });
 
+/* SAFETY CHECK (IMPORTANT) */
+if (!rocky || !grace || !ship) {
+  console.error("❌ HITBOXES NOT FOUND — check HTML class names or structure");
+}
 
-shipHitbox.addEventListener("mouseleave", () => {
+/* HOVER SYSTEM */
+rocky?.addEventListener("mouseenter", () => {
+  container.classList.add("active-rocky");
+});
+rocky?.addEventListener("mouseleave", () => {
+  container.classList.remove("active-rocky");
+});
 
-  warningSound.pause();
+grace?.addEventListener("mouseenter", () => {
+  container.classList.add("active-grace");
+});
+grace?.addEventListener("mouseleave", () => {
+  container.classList.remove("active-grace");
+});
 
-  warningSound.currentTime = 0;
+ship?.addEventListener("mouseenter", () => {
+  container.classList.add("active-ship");
+  warningSound?.play();
+});
 
+ship?.addEventListener("mouseleave", () => {
+  container.classList.remove("active-ship");
+  warningSound?.pause();
+  if (warningSound) warningSound.currentTime = 0;
 });

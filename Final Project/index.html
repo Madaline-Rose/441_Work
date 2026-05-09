@@ -12,36 +12,24 @@
 
 <div class="poster-container">
 
-  <!-- BASE POSTER -->
   <img src="assets/poster.png" class="poster-base">
 
-  <!-- CHARACTERS + SHIP -->
   <img src="assets/rocky.png" class="interactive rocky-image">
   <img src="assets/grace.png" class="interactive grace-image">
   <img src="assets/ship.png" class="interactive ship-image">
 
-  <!-- HITBOXES -->
-  <div class="hitbox rocky-hitbox"></div>
-  <div class="hitbox grace-hitbox"></div>
-  <div class="hitbox ship-hitbox"></div>
+  <!-- HIT AREAS -->
+  <div class="hitbox rocky-hitbox" data-target="rocky"></div>
+  <div class="hitbox grace-hitbox" data-target="grace"></div>
+  <div class="hitbox ship-hitbox" data-target="ship"></div>
 
   <!-- TEXT -->
   <div class="hover-text rocky-text">AMAZE AMAZE AMAZE</div>
-
-  <div class="hover-text grace-text">
-    “Science the shit out of it.”
-  </div>
-
-  <div class="hover-text ship-text">
-    WARNING: SYSTEM FAILURE
-  </div>
-
-  <!-- TITLE CLICK AREA -->
-  <div class="title-hitbox"></div>
+  <div class="hover-text grace-text">“Science the shit out of it.”</div>
+  <div class="hover-text ship-text">WARNING: SYSTEM FAILURE</div>
 
 </div>
 
-<!-- AUDIO -->
 <audio id="theme-song" src="assets/song.mp3"></audio>
 <audio id="warning-sound" src="assets/warning.mp3"></audio>
 
